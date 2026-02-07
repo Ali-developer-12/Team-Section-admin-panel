@@ -1,41 +1,22 @@
-# Prerequisites
-*.d
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Backend
+backend/node_modules/
+backend/.env
+backend/*.log
 
-# Precompiled Headers
-*.gch
-*.pch
+# Frontend (if using build tools)
+frontend/node_modules/
+frontend/dist/
 
-# Linker files
-*.ilk
+# Environment files
+.env
+.env.local
+.env.*.local
 
-# Debugger Files
-*.pdb
+# IDE
+.vscode/
+.idea/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# debug information files
-*.dwo
+# OS
+.DS_Store
+Thumbs.db

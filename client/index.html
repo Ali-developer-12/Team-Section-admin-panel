@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team data Upload</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="text-center mb-4">
+                <div class="login-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2>🔐 Team Login</h2>
+            </div>
+            
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Enter password" autocomplete="off">
+                </div>
+            </div>
+            
+            <button onclick="login()" class="btn btn-primary w-100 py-2">
+                <i class="fas fa-sign-in-alt me-2"></i> Login
+            </button>
+            
+            <div id="loginError" class="alert alert-danger mt-3" style="display: none;">
+                <i class="fas fa-exclamation-circle me-2"></i> Incorrect password! Try: admin123
+            </div>
+            
+            <div class="mt-4 pt-3 border-top text-muted small">
+                <p><i class="fas fa-server me-2"></i> Backend: <span id="backendStatus">Checking...</span></p>
+                <p><i class="fas fa-database me-2"></i> Database: <span id="databaseStatus">Checking...</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-container" style="display: none;">
+        <!-- Header -->
+        <nav class="admin-header">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="mb-0"><i class="fas fa-users me-2"></i> Team Portfolios</h1>
+                        <p class="mb-0 opacity-75">Manage team members and portfolios</p>
+                    </div>
+                    <button onclick="logout()" class="btn btn-light">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Stats -->
+        <div class="container-fluid py-3 stats-section">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalMembers">0</div>
+                            <div class="stat-label">Total Members</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-success">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="lastUpdated">-</div>
+                            <div class="stat-label">Last Updated</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-info">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="apiStatus">✓</div>
+                            <div class="stat-label">API Status</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-warning">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <button onclick="refreshData()" class="btn btn-warning btn-sm w-100">
+                                <i class="fas fa-sync-alt me-2"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container-fluid main-content">
+            <div class="row">
+                <!-- Left Side - Add Member Form -->
+                <div class="col-lg-4 mb-4">
+                    <div class="form-card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-user-plus me-2"></i> Add New Team Member</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Image Upload -->
+                            <div class="mb-4">
+                                <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('imageInput').click()">
+                                    <div id="uploadContent">
+                                        <div class="upload-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <h6>Upload Profile Photo</h6>
+                                        <p class="text-muted small mb-0">Click or drag & drop</p>
+                                        <p class="text-muted small">JPG, PNG, GIF (Max 2MB)</p>
+                                    </div>
+                                    <img id="imagePreview" class="image-preview" alt="Preview">
+                                </div>
+                                <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                            </div>
+
+                            <!-- Form Fields -->
+                            <div class="mb-3">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" id="memberName" class="form-control" placeholder="Ali Raza" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Role/Position *</label>
+                                <input type="text" id="memberRole" class="form-control" placeholder="Frontend Developer" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">Portfolio URL *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                    <input type="url" id="memberPortfolio" class="form-control" placeholder="https://ali-developer-12.netlify.app" required>
+                                </div>
+                                <div class="form-text">Make sure this URL is unique</div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button onclick="addTeamMember()" id="addBtn" class="btn btn-success btn-lg">
+                                    <span id="addBtnText">
+                                        <i class="fas fa-plus me-2"></i> Add Team Member
+                                    </span>
+                                    <span id="addBtnSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span>
+                                </button>
+                                <button onclick="clearForm()" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i> Clear Form
+                                </button>
+                            </div>
+                            
+                            <div id="formMessage" class="mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Team Members List -->
+                <div class="col-lg-8">
+                    <div class="members-card">
+                        <div class="card-header bg-white border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-users me-2 text-primary"></i> Team Members</h5>
+                                <span class="badge bg-primary" id="membersCount">0 Members</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="membersList" class="row">
+                                <!-- Members will load here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Toast -->
+        <div id="alertToast" class="alert-toast" style="display: none;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fas fa-info-circle" id="toastIcon"></i>
+                </div>
+                <div class="toast-message" id="toastMessage"></div>
+                <button type="button" class="btn-close" onclick="hideAlert()"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

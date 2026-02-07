@@ -1,0 +1,8 @@
+# Project root mein ye file banao
+echo '[build]
+publish = "client"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200' > netlify.toml
