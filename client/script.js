@@ -2,7 +2,7 @@
 // CHANGE THIS URL WHEN DEPLOYING BACKEND
 // For local development: http://localhost:5000
 // For production: https://your-backend.com
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = 'https://team-section-admin-panel-production.up.railway.app';
 
 // Frontend Admin Password (for login screen)
 const FRONTEND_PASSWORD = "aliraza123";
