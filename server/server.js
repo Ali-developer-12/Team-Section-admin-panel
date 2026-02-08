@@ -53,7 +53,26 @@ function checkAdminPassword(password) {
   return password === ADMIN_PASSWORD;
 }
 
-// ROUTES
+
+
+// ===== ROOT ROUTE =====
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Team Portfolio Backend API is running 🚀',
+    version: '1.0.0',
+    endpoints: {
+      health_check: 'GET /api/health',
+      get_team_members: 'GET /api/team-members',
+      add_member: 'POST /api/add-member',
+      delete_member: 'DELETE /api/delete-member/:id',
+      verify_password: 'POST /api/verify-password'
+    },
+    documentation: 'Contact admin for API documentation',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
 
 // 1. Get all team members (PUBLIC)
 app.get('/api/team-members', async (req, res) => {
