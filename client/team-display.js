@@ -1,5 +1,5 @@
 // Team display for portfolio websites
-const TEAM_API_URL = 'http://localhost:5000/api/team-members'; // Change to your backend URL
+const TEAM_API_URL = 'https://team-section-admin-panel-production.up.railway.app/api/team-members'; // Change to your backend URL
 
 async function loadTeamForPortfolio(containerId = 'teamContainer') {
     try {
